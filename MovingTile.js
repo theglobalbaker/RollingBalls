@@ -66,7 +66,7 @@ function MovingTile(id, pos, dir, finalPos, movingBall) {
      * Tile position
      */
     this.getFrame = function getFrame() { return this.animationFrame; };
-    this.move     = function move()     { this.animationFrame += 8; };
+    this.move     = function move()     { this.animationFrame += MovingTile.animationSpeed; };
 };
 
 MovingTile.animationSpeed = 8;
