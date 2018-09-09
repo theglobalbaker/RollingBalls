@@ -47,6 +47,15 @@ function CanvasDisplay() {
 
   /* Touch event */
   this.touchEvent = function touchEvent(type, event) {};
+
+
+  this.scaleX = function(x) {
+    return Math.floor( (x - g_xOffset) * g_xZoom);
+  }
+
+  this.scaleY = function(y) {
+    return Math.floor( (y - g_yOffset) * g_yZoom);
+  }
 }
 
 
@@ -122,7 +131,7 @@ function mouseUpEvent( e ) {
 /* Dispatch touches events */
 function touchStartEvent( e ) {
   if ( g_display != null && g_display.touchEvent != null ) {
-    g_display.touchEvent( 0, e );
+    g_display.touchEvent( g_display.mouseButtonDown, e );
   }
 
   e.preventDefault();
@@ -132,7 +141,7 @@ function touchStartEvent( e ) {
 /* Dispatch touches events */
 function touchMoveEvent( e ) {
   if ( g_display != null && g_display.touchEvent != null ) {
-    g_display.touchEvent( 1, e );
+    g_display.touchEvent( g_display.mouseButtonMove, e );
   }
 
   e.preventDefault();
@@ -142,7 +151,7 @@ function touchMoveEvent( e ) {
 /* Dispatch touches events */
 function touchEndEvent( e ) {
   if ( g_display != null && g_display.touchEvent != null ) {
-    g_display.touchEvent( 2, e );
+    g_display.touchEvent( g_display.mouseButtonUp, e );
   }
 
   e.preventDefault();

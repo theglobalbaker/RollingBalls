@@ -50,6 +50,11 @@ function Ball(x, y, colour) {
       this.targetPos = pos.copy();
   };
 
+  this.onMovingTile =
+    function onMovingTile( pos ) {
+      return this.isOnMovingTile;
+  };
+
   this.move = 
     function move( board ) {
       var dx = this.targetPos.getX() - this.pos.getX();

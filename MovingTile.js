@@ -16,23 +16,55 @@
  */
 
 /**
- * This is a tile that is moving
+ * This is a tile that is moving:
+ *
+ *   id         - Type of tile
+ *   pos        - Current position
+ *   dir        - Direction of motion
+ *   finalPos   - Where the tile will stop moving
+ *   movingBall - Ball on the moving tile (or null)
  */
-function MovingTile(id, pos, dir, movingBall) {
-    this.id = id;
-    this.pos = pos;
-    this.dir = dir;
+function MovingTile(id, pos, dir, finalPos, movingBall) {
+    this.id   = id;
+    this.pos  = pos;
+    this.dir  = dir;
+    this.finalPos = finalPos
     this.ball = movingBall;
 
     this.animationFrame = 0;
 
-    this.getId    = function getId()    { return this.id; };
-    this.getMovingBall  = function getMovingBall()  { return this.ball; };
-    this.getPos   = function getPos()   { return this.pos; };
-    this.setDir   = function setDir(d)  { this.dir = d; };
-    this.getDir   = function getDir()   { return this.dir; };
-    this.isMoving = function isMoving() { return (this.dir.x != 0) || (this.dir.y != 0); };
+    /**
+     * Id of the tile that is moving
+     */
+    this.getId = function getId() {
+      return this.id;
+    };
 
+    /**
+     * Return ball riding on the tile (or null)
+     */
+    this.getMovingBall = function getMovingBall()  {
+      return this.ball;
+    };
+
+    /**
+     * Return the current position of this tile
+     */
+    this.getPos   = function getPos()   { return this.pos; };
+
+    /**
+     * Return the direction of travel of this tile
+     */
+    this.getDir   = function getDir()   { return this.dir; };
+
+    /**
+     * Return the position where this tile will stop moving
+     */
+    this.getFinalPos   = function getFinalPos()   { return this.finalPos; };
+
+    /**
+     * Tile position
+     */
     this.getFrame = function getFrame() { return this.animationFrame; };
     this.move     = function move()     { this.animationFrame += 8; };
 };

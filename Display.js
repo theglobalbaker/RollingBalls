@@ -30,6 +30,7 @@ function Display( levelNumber ) {
 
     this.movingBalls = new Array();
     this.movingTiles = new Array();
+    this.tilesMoving = new Array();
 
     /* Constructor for Display class */
     this.initialise =
@@ -38,7 +39,6 @@ function Display( levelNumber ) {
         this.dragging = false;
         this.dragFrom = new Vector(-1, -1);
 
-        this.tileMoving = null;
         this.redrawAll  = true;
 
         // Calculate sizes
@@ -53,58 +53,47 @@ function Display( levelNumber ) {
 
    this.move = 
      function move() {
-          // Slide tiles
-          if ( this.tileMoving != null ) {
+       // Slide tiles
+       for ( var i = 0; i < this.tilesMoving.length; i++ ) {
+         movingTile = this.tilesMoving[i];
 
-            // Animation cycle complete
-            if ( this.tileMoving.getFrame() == Tile.width ) {
-               this.tileMoving.animationFrame = 0;
-               this.tileMoving.getPos().add(this.tileMoving.getDir());
-            }
+         // Has the tile got to the next square?
+         if ( movingTile.getFrame() == Tile.width ) {
+            movingTile.animationFrame = 0;
+            movingTile.getPos().add(movingTile.getDir());
 
+            if ( movingTile.getFinalPos().equals( movingTile.getPos() ) ) {
+              // Tile will stop moving
+              this.board.setTile(movingTile.getPos(), new Tile(movingTile.getId()) );
 
-            // Should the tile move?
-            if ( (this.tileMoving.getFrame() % Tile.width) ==  0 )
-            {
-              var next = this.board.getTile(this.tileMoving.getPos().copy().add( this.tileMoving.getDir() ));
-
-              this.tileMoving.animationFrame = 0;
-              if ( next.getId() == Tile.lava ) {
-                
-              } else {
-                this.board.setTile(this.tileMoving.getPos(), new Tile(this.tileMoving.getId()) );
-
-                var movingBall = this.tileMoving.getMovingBall();
-                if ( movingBall != null ) {
-       	          movingBall.getBall().moveTo(this.tileMoving.getPos().copy().mul(Tile.width));
-                  movingBall.setStartPosition(this.tileMoving.getPos());
-                  movingBall.getBall().isOnMovingTile = false;
-                }
-
-                this.tileMoving = null;
+              var movingBall = movingTile.getMovingBall();
+              if ( movingBall != null ) {
+                movingBall.getBall().moveTo(movingTile.getPos().copy().mul(Tile.width));
+                movingBall.setStartPosition(movingTile.getPos());
+                movingBall.getBall().isOnMovingTile = false;
               }
+
+              this.tilesMoving.splice( this.tilesMoving.indexOf( movingTile ), 1 )
             }
           }
+        }
 
-          // Ball on sliding tile
-          if ( this.tileMoving != null) {
-            for ( var i = 0; i < this.board.getBalls().length; i++ )
-            {
-               var ball = this.board.getBalls()[i];
-               if ( ball.isOnMovingTile ) {
-                 ball.setPosition( this.tileMoving.getPos().copy().mul(Tile.width).add( this.tileMoving.getDir().copy().mul( this.tileMoving.getFrame() )));
-               }
-            }
+        // Handle balls on on sliding tiles
+        for ( var i = 0; i < this.tilesMoving.length; i++ ) {
+          movingTile = this.tilesMoving[i];
+          movingBall = movingTile.getMovingBall();
+
+          if ( movingBall != null ) {
+            movingBall.getBall().setPosition( movingTile.getPos().copy().mul(Tile.width).add( movingTile.getDir().copy().mul( movingTile.getFrame() )));
           }
+        }
 
-          // Move balls
-          for ( var i = 0; i < this.board.getBalls().length; i++ )
-          {
-             var ball = this.board.getBalls()[i];
-             ball.move( this.board );
-          }
-
-        };
+        // Move balls
+        for ( var i = 0; i < this.board.getBalls().length; i++ ) {
+          var ball = this.board.getBalls()[i];
+          ball.move( this.board );
+        }
+      };
 
     this.drawTitlebar =
       function drawTitlebar(pos) {
@@ -152,9 +141,9 @@ function Display( levelNumber ) {
             this.redrawAll = false;
           }
 
-          // Draw background of sliding tile
-          if ( this.tileMoving != null) {
-            this.drawTileAt(this.tileMoving.getPos());
+          // Draw background underneath sliding tile
+          for ( var i = 0; i < this.tilesMoving.length; i++ ) {
+            this.drawTileAt(this.tilesMoving[i].getPos());
           }
 
           // Draw background under balls
@@ -171,13 +160,14 @@ function Display( levelNumber ) {
              }
           }
 
-          // Animate sliding tiles
-          if ( this.tileMoving != null) {
-            this.tileMoving.move();
+          // Draw sliding tiles
+          for ( var i = 0; i < this.tilesMoving.length; i++ ) {
+            movingTile = this.tilesMoving[ i ];
+            movingTile.move();
 
-            var tileId = this.tileMoving.getId();
+            var tileId = movingTile.getId();
 
-            var p = this.tileMoving.getPos().copy().mul(Tile.width).add( this.tileMoving.getDir().copy().mul( this.tileMoving.getFrame() ) );
+            var p = movingTile.getPos().copy().mul(Tile.width).add( movingTile.getDir().copy().mul( movingTile.getFrame() ) );
             this.canvas.drawImage( ImageCatalogue.getIconsImage(),
                                    64 * ( tileId & 3 ), 64 * ( tileId >> 2 ),
                                    64, 64,
@@ -208,6 +198,16 @@ function Display( levelNumber ) {
     this.userMouse = 
       function userMouse( mouseDown, x, y ) {
         this.userTouch( 0, mouseDown, x, y );
+    }
+
+    /* The user has clicked on the display */
+    this.touchEvent = 
+      function touchEvent( mouseDown, event ) {
+	for ( var i = 0; i < event.touches.length; i++ ) {
+	  var touch = event.touches[i];
+	  //	  alert('u'  + this.scaleY(touch.pageY));
+          this.userTouch(i, mouseDown, this.scaleX(touch.pageX), this.scaleY(touch.pageY));
+        }
     }
 
     /* The user has clicked on the display */
@@ -272,7 +272,7 @@ function Display( levelNumber ) {
         }
 
         // Is the user starting to move a tile?
-        if ( this.tileMoving == null && this.movingTiles.length > id && this.movingTiles[id] != null ) {
+        if ( this.movingTiles.length > id && this.movingTiles[id] != null ) {
 
           var dx = square.getX() - this.movingTiles[id].getX();
           var dy = square.getY() - this.movingTiles[id].getY();
@@ -287,8 +287,7 @@ function Display( levelNumber ) {
           } else if ( dx != 0 || dy != 0 ) {
             var tile = this.board.getTile(this.movingTiles[id]);
             if ( tile.canMove(dx, dy) ) {
-              this.tileMoving = new MovingTile( tile.getId(), this.movingTiles[id], new Vector(dx, dy), null );
-              this.board.setTile(this.movingTiles[id], new Tile(Tile.lava) );
+              this.startMovingTile( tile.getId(), this.movingTiles[id], new Vector(dx, dy), null );
               this.movingTiles[id] = null;
             }
           }
@@ -341,6 +340,31 @@ function Display( levelNumber ) {
         dragBall.moveTo(currentPosition.copy().mul(Tile.width) );
       };
 
+    /**
+     * Create a MovingTile class.  Calculate where the tile will move to.
+     *
+     * Parameters:
+     *   id   - id of Tile moving
+     *   pos  - position of Tile
+     *   dir  - Direction of travel
+     *   ball - ball on tile (or null)
+     */
+    this.startMovingTile =
+      function startMovingTile( id, pos, dir, ball ) {
+        // Where will this tile stop moving?
+        var finalPos = pos;
+        while ( this.board.getTile( finalPos.copy().add(dir) ).getId() == Tile.lava ) {
+          finalPos = finalPos.copy().add(dir);
+        }
+
+        this.tilesMoving.push( new MovingTile( id, pos, dir, finalPos, ball) );
+
+        this.board.setTile(pos, new Tile(Tile.lava) );
+        if ( ball != null ) {
+          ball.getBall().isOnMovingTile = true;
+        }
+    }
+
     this.handleBallMove = 
       function handleBallMove( movingBall, currentPosition, dir) {
         var ball        = movingBall.getBall();
@@ -356,16 +380,11 @@ function Display( levelNumber ) {
         }
 
         // Currently on an arrow tile
-        if ( this.tileMoving == null && tileCurrent.canMove( dir.getX(), dir.getY() ) ) {
+        if ( !ball.onMovingTile() && tileCurrent.canMove( dir.getX(), dir.getY() ) ) {
           if ( tileNext.getId() == Tile.lava ) {
-            this.tileMoving = new MovingTile( tileCurrent.getId(), movingBall.getStartPosition(), dir, movingBall );
-            this.board.setTile(movingBall.getStartPosition(), new Tile(Tile.lava) );
-            movingBall.getBall().isOnMovingTile = true;
+            this.startMovingTile( tileCurrent.getId(), movingBall.getStartPosition(), dir, movingBall );
             this.redrawAll = true;
             return false;
-          } else {
-            movingBall.getBall().isOnMovingTile = false;
-            this.tileMoving = null;
           }
         }
 
@@ -496,3 +515,4 @@ function Display( levelNumber ) {
 
 Display.backgroundColour = "rgba(0,0,0,1.0)";
 Display.titleBarColour = "rgba(128,128,128,1.0)";
+

@@ -39,8 +39,9 @@ function TitlePage() {
     /* The user has clicked on the display */
     this.userMouse = 
       function userMouse( mouseDown, x, y ) {
-        this.userTouch( mouseDown );
-    }
+        this.touchEvent( mouseDown, null );
+      }
+
 
     /* The user has clicked on the display */
     this.touchEvent = 

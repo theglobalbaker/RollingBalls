@@ -97,6 +97,17 @@ function LevelSelect() {
         }
     }
 
+    /* The user has clicked on the display */
+    this.touchEvent = 
+      function touchEvent( type, event ) {
+        for ( var i = 0; i < this.event.touches.length; i++ ) {
+          alert('hi');
+	  var touch = this.event.touches[i];
+          this.userTouch(Display.scaleX(touch.pageX), Display.scaleY(touch.pageY));
+        }
+    }
+
+
     /*
      * This method is called multiple times a second to handle animation.
      * Returns false when paused to stop the tick count increasing.
