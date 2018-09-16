@@ -21,7 +21,6 @@
  */
 function Display( levelNumber ) {
     CanvasDisplay.prototype.constructor.apply( this );
-    levelNumber = 46;
 
     /**
      * Initialize the Display class and Game Engine.
@@ -242,12 +241,8 @@ function Display( levelNumber ) {
 
     /* The user has clicked on the display */
     this.touchEvent = 
-      function touchEvent( mouseDown, event ) {
-	for ( var i = 0; i < event.touches.length; i++ ) {
-	  var touch = event.touches[i];
-	  //	  alert('u'  + this.scaleY(touch.pageY));
-          this.userTouch(i, mouseDown, this.scaleX(touch.pageX), this.scaleY(touch.pageY));
-        }
+      function touchEvent( mouseDown, parsedEvent ) {
+        this.userTouch(parsedEvent.id, mouseDown, parsedEvent.x, parsedEvent.y);
     }
 
     /**

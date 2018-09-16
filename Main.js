@@ -128,10 +128,24 @@ function mouseUpEvent( e ) {
   }
 }
 
+/* Dispatch generic touch event */
+function touchEventDispatch( mouseButton, e ) {
+  for ( var i = 0; i < e.changedTouches.length; i++ ) {
+     var touch =  e.changedTouches[i];
+     var parsed = {
+        id: touch.identifier,
+        x:  Math.floor( (touch.pageX - g_xOffset) * g_xZoom ),
+        y:  Math.floor( (touch.pageY - g_yOffset) * g_yZoom )
+     };
+
+     g_display.touchEvent( mouseButton, parsed );
+  }
+}
+
 /* Dispatch touches events */
 function touchStartEvent( e ) {
   if ( g_display != null && g_display.touchEvent != null ) {
-    g_display.touchEvent( g_display.mouseButtonDown, e );
+    touchEventDispatch( g_display.mouseButtonDown, e );
   }
 
   e.preventDefault();
@@ -141,7 +155,7 @@ function touchStartEvent( e ) {
 /* Dispatch touches events */
 function touchMoveEvent( e ) {
   if ( g_display != null && g_display.touchEvent != null ) {
-    g_display.touchEvent( g_display.mouseButtonMove, e );
+    touchEventDispatch( g_display.mouseButtonMove, e );
   }
 
   e.preventDefault();
@@ -151,7 +165,7 @@ function touchMoveEvent( e ) {
 /* Dispatch touches events */
 function touchEndEvent( e ) {
   if ( g_display != null && g_display.touchEvent != null ) {
-    g_display.touchEvent( g_display.mouseButtonUp, e );
+    touchEventDispatch( g_display.mouseButtonUp, e );
   }
 
   e.preventDefault();
@@ -183,8 +197,8 @@ function onResize() {
     g_xZoom   = document.getElementById( "htmlcanvas" ).width  / document.getElementById( "htmlcanvas" ).offsetWidth;
     g_yZoom   = document.getElementById( "htmlcanvas" ).height / document.getElementById( "htmlcanvas" ).offsetHeight;
 
-    g_width = 1008;
-    g_height = 768;
+    g_width = 1024;
+    g_height = 700;
     document.getElementById( "htmlcanvas" ).width  = g_width;
     document.getElementById( "htmlcanvas" ).height = g_height;
 }
