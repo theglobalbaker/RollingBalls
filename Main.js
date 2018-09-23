@@ -197,8 +197,8 @@ function onResize() {
     g_xZoom   = document.getElementById( "htmlcanvas" ).width  / document.getElementById( "htmlcanvas" ).offsetWidth;
     g_yZoom   = document.getElementById( "htmlcanvas" ).height / document.getElementById( "htmlcanvas" ).offsetHeight;
 
-    g_width = 1024;
-    g_height = 700;
+    g_width = document.getElementById( "htmlcanvas" ).width;
+    g_height = document.getElementById( "htmlcanvas" ).height;
     document.getElementById( "htmlcanvas" ).width  = g_width;
     document.getElementById( "htmlcanvas" ).height = g_height;
 }

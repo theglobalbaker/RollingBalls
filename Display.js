@@ -49,7 +49,7 @@ function Display( levelNumber ) {
         this.tilesMoving = new Array();
 
         // Display layout
-        this.displayY      = 70;
+        this.displayY      = 50;
         this.displayWidth  = this.board.width  * Tile.width;
         this.displayHeight = this.board.height * Tile.height + this.displayY;
 
@@ -75,8 +75,8 @@ function Display( levelNumber ) {
           this.canvas.drawImage( ImageCatalogue.getStarsImage(), 
                                  Tile.width * 2 * image, 0, 
                                  Tile.width * 2, Tile.height * 2, 
-                                 Tile.width * (24 + i), Tile.height / 2, 
-                                 Tile.width, Tile.height );
+                                 g_width + this.displayY * (i - 4), 0, 
+                                 this.displayY, this.displayY );
         }
       };
 
@@ -265,7 +265,7 @@ function Display( levelNumber ) {
 
         // Menu
         if ( y < this.displayY ) {
-          if ( x > 28 * Tile.width && mouseDown == this.mouseButtonDown ) {
+          if ( x > g_width - this.displayY && mouseDown == this.mouseButtonDown ) {
             g_display = new LevelSelect();
           }
           return;
