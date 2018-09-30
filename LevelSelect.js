@@ -26,6 +26,7 @@ function LevelSelect() {
     this.initialise =
       function initialise() {
         this.progress = new ProgressRecord();
+        this.levelGroup = 0;
     };
 
     /* Constructor for Display class */
@@ -35,13 +36,33 @@ function LevelSelect() {
         this.canvas.fillStyle = LevelSelect.backgroundColour;
         this.canvas.fillRect( 0, 0, this.displayWidth, this.displayHeight );
 
-        for ( var i = 0; i < this.progress.numberOfLevels; i++ ) {
-	    var x = i % this.tilesAcross;
-            var y = Math.floor( i / this.tilesAcross );
+        // Top bar
+        for ( var i = 0; i < 4; i++ ) {
+            this.canvas.fillStyle = LevelSelect.lockedColour;
+            if ( this.levelGroup  == i ) {
+                this.canvas.fillStyle = LevelSelect.canPlayColour;
+            }
 
-            var stars       = this.progress.getStars(i);
-            var canPlay     = this.progress.canPlay(i + 1);
-            var canPlayNext = this.progress.canPlay(i + 2);
+            this.canvas.fillRect( this.offsetX + this.titleGap * i, (this.offsetY - this.titleHeight )/2, this.titleWidth, this.titleHeight );
+
+            this.canvas.fillStyle = LevelSelect.textColour;
+            this.canvas.font = LevelSelect.titleFont;
+
+            var label = [ "Trivial", "Tricky", "Taxing", "Trauma" ][ i ];
+            var textSize = this.canvas.measureText( label );
+            this.canvas.fillText( label, this.offsetX + this.titleGap * i + (this.titleWidth - textSize.width) / 2, (this.offsetY)/2 + 7);
+        }
+
+        for ( var i = 0; i < this.levelsPerGroup; i++ ) {
+            var level = i + 1 + this.levelGroup * this.levelsPerGroup;
+            if ( level >= this.progress.numberOfLevels ) break;
+
+	    var x = (i % this.tilesAcross) * this.tileGapX + this.offsetX;
+            var y = Math.floor( i / this.tilesAcross ) * this.tileGapY + this.offsetY;
+
+            var stars       = this.progress.getStars(level);
+            var canPlay     = this.progress.canPlay(level);
+            var canPlayNext = this.progress.canPlay(level + 1);
 
             this.canvas.fillStyle = LevelSelect.lockedColour;
             if (canPlay & canPlayNext) {
@@ -52,29 +73,37 @@ function LevelSelect() {
                 stars = 0;
             }
 
-            this.canvas.fillRect( x * this.tileGapX + this.offsetX, y * this.tileGapY + this.offsetY,
-                                  this.tileWidth, this.tileHeight );
+            this.canvas.fillRect( x, y, this.tileWidth, this.tileHeight );
 
             this.canvas.fillStyle = LevelSelect.textColour;
-            this.canvas.fillText("" + i, x * this.tileGapX + this.offsetX, y * this.tileGapY + this.offsetY);
+            this.canvas.font = LevelSelect.textFont;
+            var textSize = this.canvas.measureText( "" + level );
+            this.canvas.fillText("" + level, x + (this.tileWidth - textSize.width) / 2, y + this.tileHeight / 2 + 10);
 
 
             for ( var j = 0; j < stars; j++ ) {
               var image = 1;
               this.canvas.drawImage( ImageCatalogue.getStarsImage(), 
-                                     Tile.width * 2 * image, 0, Tile.width, Tile.height,
-                                     x * this.tileGapX + this.offsetX + j * 10, y * this.tileGapY + this.offsetY, Tile.height / 2, Tile.width);
+                                     Tile.width * 2 * image, 0, Tile.width * 2, Tile.height * 2,
+                                     x + j * 10, y, Tile.height / 2, Tile.width);
             }
         }
     };
 
-    this.offsetX     = 100;
-    this.offsetY     = 100;
     this.tilesAcross = 5;
     this.tileGapX    = 100;
-    this.tileGapY    = 200;
+    this.tileGapY    = 150;
     this.tileWidth   = 90;
-    this.tileHeight  = 190;
+    this.tileHeight  = 140;
+
+    this.levelsPerGroup = 15;
+    this.titleAcross  = 4;
+    this.titleGap     = (this.tileGapX * ( this.tilesAcross - 1 ) + this.tileWidth + 10) / this.titleAcross;
+    this.titleWidth   = this.titleGap - 10;
+    this.titleHeight  = 50;
+
+    this.offsetX     = (g_width - (this.tileGapX * this.tilesAcross))/2;
+    this.offsetY     = 100;
 
     /* The user has clicked on the display */
     this.userMouse = 
@@ -85,14 +114,21 @@ function LevelSelect() {
     /* The user has clicked on the display */
     this.userTouch = 
 	function userTouch( id, state, x, y ) {
+
+        if ( state != this.mouseButtonDown ) return;
+
         var x1 = Math.floor( (x - this.offsetX) / this.tileGapX );
         var y1 = Math.floor( (y - this.offsetY) / this.tileGapY );
 
         if ( x1 < 0 || x1 >= this.tileAcross ) return;
-        if ( y1 < 0 ) return;
+        if ( y1 < 0 ) {
+            var i = Math.floor((x - this.offsetX) / this.titleGap);
+            if ( i < 0 || i >= 4 ) return;
+            this.levelGroup = i;
+        }
 
-        var level = y1 * this.tilesAcross + x1 + 1;
-        if ( this.progress.canPlay(level) && state == this.mouseButtonDown ) {
+        var level = y1 * this.tilesAcross + x1 + 1 + this.levelGroup * this.levelsPerGroup;
+        if ( this.progress.canPlay(level)  ) {
           g_display = new Display(level);
         }
     }
@@ -133,6 +169,8 @@ function LevelSelect() {
 
 LevelSelect.backgroundColour = "rgba(0,0,255,1.0)";
 LevelSelect.textColour       = "rgba(0,0,0,1.0)";
+LevelSelect.titleFont        = "20px Ariel";
+LevelSelect.textFont         = "50px Ariel";
 LevelSelect.unfinishedColour = "rgba(0,128,128,1.0)";
 LevelSelect.canPlayColour    = "rgba(0,255,255,1.0)";
 LevelSelect.lockedColour     = "rgba(255,0,0,1.0)";

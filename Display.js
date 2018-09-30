@@ -549,7 +549,7 @@ function Display( levelNumber ) {
       function drawEndOfLevel() {
         // Blank
         this.canvas.fillStyle = Display.backgroundColour;
-        this.canvas.fillRect( 100, 100, this.displayWidth - 100 * 2, this.displayHeight - 100 * 2 );
+        this.canvas.fillRect( 100, 100, g_width - 100 * 2, g_height - 100 * 2 );
 
 	new ProgressRecord().setStars( this.levelNumber, this.collectedStars );
     };

@@ -29,7 +29,7 @@ function ProgressRecord() {
     this.numberOfStars =
       function numberOfStars() {
         var count = 0;
-        for ( var i = 0; i < this.numberOfLevels; i++ ) {
+        for ( var i = 1; i <= this.numberOfLevels; i++ ) {
 	    if ( this.starsOnLevel[i] > 0 ) { count += this.starsOnLevel[i]; }
         }
 
@@ -37,7 +37,7 @@ function ProgressRecord() {
     }
 
     /** Different start levels: [Trivial, Tricky, Taxing, Trauma] */
-    this.unlockLevels = [ 1, 11, 21, 31 ];
+    this.unlockLevels = [ 1, 16, 31, 46 ];
     this.unlockStars  = [ 0, 25, 50, 80 ];
 
     this.canPlay = 
@@ -99,7 +99,7 @@ function ProgressRecord() {
           this.numberOfLevels = i;
 
           var starOnLevel = -1;
-          if ( progress.length > i ) {
+          if ( progress.length >= i ) {
             switch(progress[i-1]) {
               case '*': break;
               default: starOnLevel = Math.round(progress[i-1]);
@@ -113,9 +113,15 @@ function ProgressRecord() {
     this.load();
 };
 
+var g_cookie = "";
 
 function GetCookie( name ) {
-    var cookies = document.cookie.split(";");
+    if ( g_cookie.length == 0 ) {
+       g_cookie = document.cookie;
+    }
+
+    cookies = g_cookie.split(";");
+
     for ( var i = 0; i < cookies.length; i++ ) {
 	var cookie = cookies[i].split(",");
 	for ( var j = 0; j < cookie.length; j++ ) {
@@ -129,6 +135,7 @@ function GetCookie( name ) {
 
 function SetCookie( progress, audio ) {
     var expiry = new Date();
-    expiry.setDate( expiry.getDate() + 3000 );
-    document.cookie = "Progress=" + progress + ",Audio=" + audio + "; expires=" + expiry.toUTCString();
+    expiry.setDate( expiry.getDate() + 300000 );
+    g_cookie = "Progress=" + progress + ",Audio=" + audio + "; expires=" + expiry.toUTCString();
+    document.cookie = g_cookie;
 }
