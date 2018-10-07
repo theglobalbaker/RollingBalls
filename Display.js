@@ -258,7 +258,12 @@ function Display( levelNumber ) {
         // End of level
         if ( this.endOfLevel ) {
           if ( mouseDown == this.mouseButtonDown) {
-            g_display = new LevelSelect();
+            if ( x > 100 && x < g_width / 2 && y > g_height - 200 && y < g_height - 100 ) {
+              g_display = new LevelSelect();
+            }
+            if ( x > g_width / 2 && x < g_width - 100 && y > g_height - 200 && y < g_height - 100 ) {
+              g_display = new Display( this.levelNumber + 1 );
+            }
           }
           return;
         }
@@ -549,7 +554,18 @@ function Display( levelNumber ) {
       function drawEndOfLevel() {
         // Blank
         this.canvas.fillStyle = Display.backgroundColour;
-        this.canvas.fillRect( 100, 100, g_width - 100 * 2, g_height - 100 * 2 );
+        this.canvas.drawImage( ImageCatalogue.getLevelCompleteImage(), 100, 100 );
+
+        for ( var i = 0; i < 3; i++ ) {
+          var image = 2;
+          if ( this.bestCollectedStars > i ) image = 0;
+          if ( this.collectedStars     > i ) image = 1;
+          this.canvas.drawImage( ImageCatalogue.getStarsImage(), 
+                                 Tile.width * 2 * image, 0, 
+                                 Tile.width * 2, Tile.height * 2, 
+                                 100 + (g_width - 100 * 2 - Tile.width * 6) / 2 + Tile.width * 2 * i, (g_height - Tile.height * 2)/2, 
+                                 this.displayY, this.displayY );
+        }
 
 	new ProgressRecord().setStars( this.levelNumber, this.collectedStars );
     };
@@ -577,4 +593,6 @@ function Display( levelNumber ) {
 
 Display.backgroundColour = "rgba(0,0,0,1.0)";
 Display.titleBarColour = "rgba(128,128,128,1.0)";
+Display.textColour = "rgba(255,255,255,1.0)";
+Display.textFont         = "50px Ariel";
 

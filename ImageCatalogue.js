@@ -25,7 +25,7 @@ function ImageCatalogue( onloadCallback ) {
   /* Start loading images asynchronously */
   this.loadImages = 
     function loadImages() {
-      this.imagesRemaining = 5;
+      this.imagesRemaining = 6;
 
       this.icons             = new Image();
       this.icons.onload      = this.onLoad;
@@ -47,10 +47,15 @@ function ImageCatalogue( onloadCallback ) {
       this.titlePage.onerror = this.onError;
       this.titlePage.src     = "title.png";
 
-      this.overlay           = new Image();
-      this.overlay.onload    = this.onLoad;
-      this.overlay.onerror   = this.onError;
-      this.overlay.src       = "overlay.png";
+      this.levelComplete         = new Image();
+      this.levelComplete.onload  = this.onLoad;
+      this.levelComplete.onerror = this.onError;
+      this.levelComplete.src     = "levelComplete.png";
+
+      this.back              = new Image();
+      this.back.onload       = this.onLoad;
+      this.back.onerror      = this.onError;
+      this.back.src          = "back.png";
   };
 
   /* Called on the successful load of an image.  When all images are loaded,
@@ -103,9 +108,14 @@ ImageCatalogue.getTitlePageImage =
     return g_imageCatalogueClass.titlePage;
   };
 
-/* Retrieve overlay image for text display */
-ImageCatalogue.getOverlayImage =
-  function getOverlayImage() {
-    return g_imageCatalogueClass.overlay;
+/* Image for for level complete page */
+ImageCatalogue.getLevelCompleteImage =
+  function getLevelCompleteImage() {
+    return g_imageCatalogueClass.levelComplete;
   };
 
+/* Image for back button */
+ImageCatalogue.getBackImage =
+  function getBackImage() {
+    return g_imageCatalogueClass.back;
+  };

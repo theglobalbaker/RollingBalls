@@ -33,7 +33,7 @@ function ProgressRecord() {
 	    if ( this.starsOnLevel[i] > 0 ) { count += this.starsOnLevel[i]; }
         }
 
-        return 100;
+        return count;
     }
 
     /** Different start levels: [Trivial, Tricky, Taxing, Trauma] */

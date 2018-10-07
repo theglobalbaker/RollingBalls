@@ -46,7 +46,9 @@ function TitlePage() {
     /* The user has clicked on the display */
     this.touchEvent = 
       function touchEvent( type, event ) {
-        g_display = new LevelSelect();
+        if ( type == this.mouseButtonDown) {
+          g_display = new LevelSelect();
+	}
     }
 
     /*

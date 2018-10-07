@@ -38,9 +38,12 @@ function LevelSelect() {
 
         // Top bar
         for ( var i = 0; i < 4; i++ ) {
+            // Can we play this level group?
             this.canvas.fillStyle = LevelSelect.lockedColour;
             if ( this.levelGroup  == i ) {
                 this.canvas.fillStyle = LevelSelect.canPlayColour;
+            } else if ( this.progress.canPlay( i * this.levelsPerGroup + 1) ) {
+                this.canvas.fillStyle = LevelSelect.unfinishedColour;
             }
 
             this.canvas.fillRect( this.offsetX + this.titleGap * i, (this.offsetY - this.titleHeight )/2, this.titleWidth, this.titleHeight );
@@ -54,6 +57,7 @@ function LevelSelect() {
         }
 
         for ( var i = 0; i < this.levelsPerGroup; i++ ) {
+            // Show which levels can be played 
             var level = i + 1 + this.levelGroup * this.levelsPerGroup;
             if ( level >= this.progress.numberOfLevels ) break;
 
@@ -88,6 +92,23 @@ function LevelSelect() {
                                      x + j * 10, y, Tile.height / 2, Tile.width);
             }
         }
+
+        // Number of stars
+        var x = this.tilesAcross * this.tileGapX + this.offsetX;
+        var y = (this.offsetY - Tile.height * 2) / 2;
+        this.canvas.drawImage( ImageCatalogue.getStarsImage(), 
+                               Tile.width * 2, 0, Tile.width * 2, Tile.height * 2,
+                               x, y, Tile.height * 2, Tile.width * 2);
+
+        this.canvas.fillStyle = LevelSelect.starColour;
+        this.canvas.font = LevelSelect.starFont;
+        this.canvas.fillText("" + this.progress.numberOfStars(), x + Tile.width * 2, y + Tile.height + 15);
+
+        // Back to title page
+        this.canvas.drawImage( ImageCatalogue.getBackImage(), 
+                               0, 0, Tile.width * 2, Tile.height * 2,
+                               Tile.width, g_height - y - Tile.height * 2, Tile.height * 2, Tile.width * 2);
+
     };
 
     this.tilesAcross = 5;
@@ -117,6 +138,11 @@ function LevelSelect() {
 
         if ( state != this.mouseButtonDown ) return;
 
+        if ( x < this.offsetX && y > g_height - Tile.height * 3 ) {
+          g_display = new TitlePage();
+          return;
+        }
+
         var x1 = Math.floor( (x - this.offsetX) / this.tileGapX );
         var y1 = Math.floor( (y - this.offsetY) / this.tileGapY );
 
@@ -124,13 +150,22 @@ function LevelSelect() {
         if ( y1 < 0 ) {
             var i = Math.floor((x - this.offsetX) / this.titleGap);
             if ( i < 0 || i >= 4 ) return;
-            this.levelGroup = i;
+
+            // Check that the level group is accessible
+            if ( this.progress.canPlay( i * this.levelsPerGroup + 1) ) {
+                this.levelGroup = i;
+            } else {
+                alert( "You need " + this.progress.unlockStars[i] + " stars to unlock these levels." );
+            }
+            return;
         }
 
         var level = y1 * this.tilesAcross + x1 + 1 + this.levelGroup * this.levelsPerGroup;
         if ( this.progress.canPlay(level)  ) {
           g_display = new Display(level);
-        }
+        } else {
+          alert( "You haven't unlocked this level yet!" );
+	}
     }
 
     /* The user has clicked on the display */
@@ -171,6 +206,8 @@ LevelSelect.backgroundColour = "rgba(0,0,255,1.0)";
 LevelSelect.textColour       = "rgba(0,0,0,1.0)";
 LevelSelect.titleFont        = "20px Ariel";
 LevelSelect.textFont         = "50px Ariel";
-LevelSelect.unfinishedColour = "rgba(0,128,128,1.0)";
-LevelSelect.canPlayColour    = "rgba(0,255,255,1.0)";
-LevelSelect.lockedColour     = "rgba(255,0,0,1.0)";
+LevelSelect.unfinishedColour = "rgba(0,100,0,1.0)";
+LevelSelect.canPlayColour    = "rgba(0,168,0,1.0)";
+LevelSelect.lockedColour     = "rgba(80,80,80,1.0)";
+LevelSelect.starFont         = "50px Ariel";
+LevelSelect.starColour       = "rgba(255,255,0,1.0)";
