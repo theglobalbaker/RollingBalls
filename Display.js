@@ -469,6 +469,7 @@ function Display( levelNumber ) {
             canLeaveTile = ball.useKey(tileNext.getId() & 3);
             if ( canLeaveTile ) {
        	      this.board.setTile(currentPosition.copy().add(dir), new Tile(Tile.blank));
+              Sounds.playClick();
             }
             break;
           }
@@ -496,6 +497,8 @@ function Display( levelNumber ) {
            this.board.setTile(currentPosition, new Tile(Tile.blank));
            this.collectedStars++;
            this.redrawAll = true;
+
+           Sounds.playPing();
            break;
         }
         default: break;
@@ -506,11 +509,15 @@ function Display( levelNumber ) {
         case Tile.key: {
            this.board.setTile(currentPosition, new Tile(Tile.blank));
            ball.addKey(tileCurrent.getId() & 3);
+
+           Sounds.playClick();
            break;
         }
         case Tile.exit: {
           if (ball.getColour() == (tileCurrent.getId() & 3)) {
             ball.remove();
+
+            Sounds.playFall();
           }
           break;
         }
