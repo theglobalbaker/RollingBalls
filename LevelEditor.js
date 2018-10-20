@@ -22,7 +22,7 @@
 function LevelEditor() {
     CanvasDisplay.prototype.constructor.apply( this );
 
-    this.level = Level.load(1);
+    this.level = Level.load(0);
     this.redrawAll = true;
     this.selected = 0;
 
@@ -30,19 +30,19 @@ function LevelEditor() {
     this.initialise =
       function initialise() {
         // Calculate sizes
-        this.displayY      = 70;
-        this.displayWidth  = Board.width  * Tile.width;
-        this.displayHeight = Board.height * Tile.height + this.displayY;
+        this.displayY      = 50;
+        this.displayWidth  = this.level.WIDTH  * Tile.width;
+        this.displayHeight = this.level.HEIGHT * Tile.height + this.displayY;
 
         // Blank
         this.canvas.fillStyle = Display.backgroundColour;
-        this.canvas.fillRect( 0, 0, this.displayWidth, this.displayHeight );
+        this.canvas.fillRect( 0, 0, g_width, g_height );
     }
 
     this.drawTitlebar =
       function drawTitlebar(pos) {
         this.canvas.fillStyle = Display.titleBarColour;
-        this.canvas.fillRect( 0, 0, 1000, this.displayY );
+        this.canvas.fillRect( 0, 0, g_width, this.displayY );
 
         for ( var i = 0; i <= Tile.movable; i++ ) {
           this.canvas.drawImage( ImageCatalogue.getIconsImage(),
@@ -61,6 +61,10 @@ function LevelEditor() {
                                64 * (5 & 3 ), 64 * ( 5 >> 2 ),
                                64, 64,
                                this.selected * Tile.width/2, (this.displayY + Tile.height/2)/2, Tile.width/2, Tile.height/2 );
+
+
+        this.canvas.drawImage( ImageCatalogue.getEditorImage(),
+                               g_width - Tile.width * 2, 0 );
       };
     
     this.drawTileAt =
@@ -85,8 +89,8 @@ function LevelEditor() {
           if ( this.redrawAll ) {
             this.drawTitlebar();
 
-            for ( var y = 0; y < Board.height; y++ ) {
-              for ( var x = 0; x < Board.width; x++ ) {
+            for ( var y = 0; y < this.level.HEIGHT; y++ ) {
+              for ( var x = 0; x < this.level.WIDTH; x++ ) {
                 this.drawTileAt(new Vector(x, y)); 
               }
             }
@@ -112,26 +116,39 @@ function LevelEditor() {
 	    this.mouseButton = false;
         }
         if ( !this.mouseButton ) return;
+        this.redrawAll = true;
 
-        y = y - this.displayY;
-        var square = new Vector(Math.floor(x/Tile.width), Math.floor(y/Tile.height));
+        // User is clicking on the board or menu
 
-        if ( y < 0 ) {
-	    this.selected = Math.floor(x/(Tile.width/2));
-        } else {
-          this.level.board[square.getY()][square.getX()] = this.selected;
+        if ( y > this.displayY ) {
+          this.level.board[ Math.floor( (y - this.displayY) / Tile.height ) ][ Math.floor( x / Tile.width ) ] = this.selected;
+          return;
         }
 
+        // User has selected "play this level"
+        if ( x > g_width - Tile.width ) {
+          g_levelEdit = this.level.board;
+          g_display = new Display(0);
+          return;
+        }
+
+        // User is clicking on menu bar
+        this.selected = Math.floor(x/(Tile.width/2));
         if ( this.selected > Tile.movable ) {
+
+          // Show URL for this board
           this.outputLevel();
           this.mouseButton = false;
+          this.selected = 0;
         }
-
-        this.redrawAll = true;
     };
 
     this.outputLevel =
       function outputLevel() {
+        // URL version
+        var url = "index.html?level=";
+
+        // Javascript version
         var level = 
             "  function Level_1() {\n"
           + "    this.accessCode = \"\";\n"
@@ -140,11 +157,15 @@ function LevelEditor() {
           + "    this.board      =\n"
           + "    [\n";
 
-        for ( var y = 0; y < Board.height; y++ ) {
+
+        for ( var y = 0; y < this.level.HEIGHT; y++ ) {
           level += "      [";
-          for ( var x = 0; x < Board.width; x++ ) {
+          for ( var x = 0; x < this.level.WIDTH; x++ ) {
             if (this.level.board[y][x] < 10 ) level += " ";
+
             level += this.level.board[y][x] + ",";
+
+            url = url + ('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'[ this.level.board[y][x] ]);
           }
           level += "],\n";
         }
@@ -152,9 +173,10 @@ function LevelEditor() {
         level += 
             "    ];\n";
           + "  };\n\n";
-      
-        alert(level);
-    };
+
+        document.body.style.color = "#ffffff"
+        document.body.innerHTML = '<br/><font size="48"><a href="' + url + '">Share this link</a></font><br/><br/>' + level.replace(/\n/g, '<br/>');
+  };
 
 
     /*
@@ -177,3 +199,46 @@ function LevelEditor() {
     /* Call class initialiser */
     this.initialise();
 }
+
+LevelEditor.packing = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+
+/**
+ * Deserialize a URL
+ */
+LevelEditor.unpackLevel = 
+  function unpackLevel( serialized ) {
+      for ( var y = 0; y < Level.HEIGHT; y++ ) {
+        for ( var x = 0; x < Level.WIDTH; x++ ) {
+            g_levelEdit[y][x] = LevelEditor.packing.indexOf( serialized[0] );
+            serialized = serialized.substring(1); 
+        }
+      }
+  }
+
+function Level_0() {
+    this.accessCode = "";
+    this.name       = "";
+    this.message    = "";
+    this.board      = g_levelEdit;
+}
+
+var g_levelEdit = 
+   [
+     [ 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3 ],
+     [ 3,36, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3 ],
+     [ 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3 ],
+     [ 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3 ],
+     [ 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3 ],
+     [ 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3 ],
+     [ 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3 ],
+     [ 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3 ],
+     [ 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3 ],
+     [ 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3 ],
+     [ 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3 ],
+     [ 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3 ],
+     [ 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3 ],
+     [ 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3 ],
+     [ 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3 ],
+     [ 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3 ],
+     [ 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3 ],
+   ];

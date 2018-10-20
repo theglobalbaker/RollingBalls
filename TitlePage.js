@@ -32,23 +32,34 @@ function TitlePage() {
       function draw() {
         // Blank
         this.canvas.fillStyle = TitlePage.backgroundColour;
-        this.canvas.fillRect( 0, 0, this.displayWidth, this.displayHeight );
-        this.canvas.drawImage( ImageCatalogue.getTitlePageImage(), 0, 0, this.displayWidth, this.displayHeight );
+        this.canvas.fillRect( 0, 0, g_width, g_height );
+        this.canvas.drawImage( ImageCatalogue.getTitlePageImage(), 0, 0, g_width, g_height );
+
+        // Options
+        this.canvas.drawImage( ImageCatalogue.getOptionsImage(), 
+                               0, 0, Tile.width * 2, Tile.height * 2,
+                               Tile.width, g_height - Tile.height * 3, Tile.height * 2, Tile.width * 2);
+
     };
 
     /* The user has clicked on the display */
     this.userMouse = 
       function userMouse( mouseDown, x, y ) {
-        this.touchEvent( mouseDown, null );
-      }
-
+        this.userTouch( 0, mouseDown, x, y );
+    }
 
     /* The user has clicked on the display */
-    this.touchEvent = 
-      function touchEvent( type, event ) {
-        if ( type == this.mouseButtonDown) {
-          g_display = new LevelSelect();
-	}
+    this.userTouch = 
+      function userTouch( id, state, x, y ) {
+
+        if ( state != this.mouseButtonDown ) return;
+
+        if ( x < Tile.width * 3 && y > g_height - Tile.height * 3 ) {
+          g_display = new OptionsPage();
+          return;
+        }
+
+        g_display = new LevelSelect();
     }
 
     /*
@@ -69,9 +80,106 @@ function TitlePage() {
       };
 
     /* Call class initialiser */
-    this.displayWidth = 1000;
-    this.displayHeight = 800;
     this.initialise();
 }
 
 TitlePage.backgroundColour = "rgba(0,0,255,1.0)";
+
+
+/**
+ * The display class is responsible for redisplaying
+ * the menu, timer and board for the current level.
+ */
+function OptionsPage() {
+    CanvasDisplay.prototype.constructor.apply( this );
+
+    /* Constructor for Display class */
+    this.initialise =
+      function initialise() {
+    };
+
+    /* Constructor for Display class */
+    this.draw =
+      function draw() {
+        // Blank
+        this.canvas.fillStyle = TitlePage.backgroundColour;
+        this.canvas.fillRect( 0, 0, g_width, g_height );
+        this.canvas.drawImage( ImageCatalogue.getTitlePageImage(), 0, 0, g_width, g_height );
+
+        // Make the image a little darker
+	this.canvas.fillStyle = "rgba( 0, 0, 0, 0.7 )";
+	this.canvas.fillRect( 0, 0, g_width, g_height );
+
+	// Menu box
+        var h = g_height / 8 + 20;
+        var gap = 80;
+        this.drawBox( "Options", h - 20);
+        this.drawBox( true ? "Sound Effects [On]" : "Sound Effects [Off]", h + gap );
+        this.drawBox( "Source Code", h + gap * 2);
+        this.drawBox( "Level Editor", h + gap * 3);
+        this.drawBox( "Reset Game", h + gap * 4);
+
+        // Back
+        this.canvas.drawImage( ImageCatalogue.getBackImage(), 
+                               0, 0, Tile.width * 2, Tile.height * 2,
+                               Tile.width, g_height - Tile.height * 3, Tile.height * 2, Tile.width * 2);
+    }
+
+    this.drawBox =
+      function( string, y ) {
+        var w = g_width;
+        var h = g_height;
+
+        this.canvas.fillStyle = "rgba( 255, 255, 255, 0.7 )";
+        this.canvas.fillRect( g_width / 8, y, g_width / 8 * 6, g_height / 8 );
+    
+        this.canvas.fillStyle = "rgba( 0, 0, 0, 1.0 )";
+        this.canvas.font = '35px sans-serif';
+        var textWidth = this.canvas.measureText( string ).width;
+        this.canvas.fillText( string, (g_width - textWidth) / 2, y + 50 );
+    }
+
+    /* The user has clicked on the display */
+    this.userMouse = 
+      function userMouse( mouseDown, x, y ) {
+        this.userTouch( 0, mouseDown, x, y );
+    }
+
+    /* The user has clicked on the display */
+    this.userTouch = 
+      function userTouch( id, state, x, y ) {
+
+        if ( state != this.mouseButtonDown ) return;
+
+        if ( x < Tile.width * 3 && y > g_height - Tile.height * 3 ) {
+          g_display = new TitlePage();
+          return;
+        }
+
+        var h = Math.floor((y - g_height / 8) / 80);
+        if ( h == 3 ) {
+          g_display = new LevelEditor();
+        }
+    }
+
+    /*
+     * This method is called multiple times a second to handle animation.
+     * Returns false when paused to stop the tick count increasing.
+     */
+    this.tick =
+      function tick() {
+
+        /* Pause
+        if ( this.selected != Display.Pause ) {
+          this.draw();
+          return true;
+        } */
+
+        this.draw();
+        return false;      
+      };
+
+    /* Call class initialiser */
+    this.initialise();
+}
+

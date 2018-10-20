@@ -65,14 +65,6 @@ function main() {
   ImageCatalogue.initialise( start );
 }
 
-/* Load level editor */
-function edit() {
-  g_edit = true;
-
-  /* Load the image catalogue, and notify the start call when ready */ 
-  ImageCatalogue.initialise( start );
-}
-
 
 /* The imageCatalogue resources have been loaded - start the game */
 function start() {
@@ -86,8 +78,15 @@ function start() {
   document.addEventListener( "touchend",   touchEndEvent, false );
   TickTimer.start();
 
-  /* Display the Title Page */
-  g_display = g_edit ? new LevelEditor() : new TitlePage();
+  if ( !document.location.search.startsWith( "?level=" ) ) {
+    /* Display the Title Page */
+    g_display = new TitlePage();
+  } else {
+    /* Play a level packed in the URL */
+    LevelEditor.unpackLevel( document.location.search.substring( "?level=".length ) );
+    g_display = new Display(0);
+  }
+
   onResize();
 }
 

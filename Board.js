@@ -24,8 +24,8 @@ function Board(level) {
     /* Constructor for Board class */
     this.initialise =
       function initialise(level) {
-        this.width = Board.width;
-        this.height = Board.height;
+        this.width  = level.WIDTH;
+        this.height = level.HEIGHT;
 
         this.balls = new Array();
 
@@ -73,5 +73,3 @@ function Board(level) {
     this.initialise(level);
 }
 
-Board.width  = 30;
-Board.height = 22;

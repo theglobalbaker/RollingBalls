@@ -107,7 +107,7 @@ function LevelSelect() {
         // Back to title page
         this.canvas.drawImage( ImageCatalogue.getBackImage(), 
                                0, 0, Tile.width * 2, Tile.height * 2,
-                               Tile.width, g_height - y - Tile.height * 2, Tile.height * 2, Tile.width * 2);
+                               Tile.width, g_height - Tile.height * 3, Tile.height * 2, Tile.width * 2);
 
     };
 

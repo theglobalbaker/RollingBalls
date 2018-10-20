@@ -25,7 +25,7 @@ function ImageCatalogue( onloadCallback ) {
   /* Start loading images asynchronously */
   this.loadImages = 
     function loadImages() {
-      this.imagesRemaining = 6;
+      this.imagesRemaining = 8;
 
       this.icons             = new Image();
       this.icons.onload      = this.onLoad;
@@ -56,6 +56,16 @@ function ImageCatalogue( onloadCallback ) {
       this.back.onload       = this.onLoad;
       this.back.onerror      = this.onError;
       this.back.src          = "back.png";
+
+      this.options           = new Image();
+      this.options.onload    = this.onLoad;
+      this.options.onerror   = this.onError;
+      this.options.src       = "options.png";
+
+      this.editor         = new Image();
+      this.editor.onload  = this.onLoad;
+      this.editor.onerror = this.onError;
+      this.editor.src     = "editor.png";
   };
 
   /* Called on the successful load of an image.  When all images are loaded,
@@ -118,4 +128,16 @@ ImageCatalogue.getLevelCompleteImage =
 ImageCatalogue.getBackImage =
   function getBackImage() {
     return g_imageCatalogueClass.back;
+  };
+
+/* Image for option button */
+ImageCatalogue.getOptionsImage =
+  function getOptionsImage() {
+    return g_imageCatalogueClass.options;
+  };
+
+/* Image for editor button */
+ImageCatalogue.getEditorImage =
+  function getEditorImage() {
+    return g_imageCatalogueClass.editor;
   };

@@ -24,8 +24,14 @@ Level.load =
       return null;
     }
 
-    return eval( "new Level_" + levelNumber + "()" );
+    level = eval( "new Level_" + levelNumber + "()" );
+    level.WIDTH = Level.WIDTH;
+    level.HEIGHT = Level.HEIGHT;
+    return level;
   };
+
+Level.WIDTH  = 25;
+Level.HEIGHT = 17;
 
 function Level_1() {
     this.name       = "Welcome to Rolling Balls!";
