@@ -107,6 +107,12 @@ function LevelEditor() {
     }
 
     /* The user has clicked on the display */
+    this.touchEvent = 
+      function touchEvent( mouseDown, parsedEvent ) {
+        this.userTouch(parsedEvent.id, mouseDown, parsedEvent.x, parsedEvent.y);
+    }
+
+    /* The user has clicked on the display */
     this.userTouch = 
       function userTouch( id, mouseDown, x, y ) {
         if ( mouseDown == this.mouseButtonDown) {

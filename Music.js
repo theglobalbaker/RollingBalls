@@ -27,7 +27,8 @@ Music.current = null;
 Music.volume = 0.01;
 
 /* Switch music on or off */
-Music.toggleMusic = function toggleMusic() {
+Music.toggleMusic = function toggleMusic( state ) {
+  if ( Music.enabled == (state ? 1 : 0) ) return;
   Music.enabled = 1 - Music.enabled;
 
   if ( Music.enabled == 1 ) {

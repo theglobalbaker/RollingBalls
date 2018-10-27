@@ -102,6 +102,9 @@ function OptionsPage() {
     /* Constructor for Display class */
     this.initialise =
       function initialise() {
+
+      this.audioOptionText = [ "Music and Sound Effects", "Sound Effects only", "Mute" ];
+      this.audioOption = (1 - Music.enabled) + (Sounds.isMute() ? 1 : 0);
     };
 
     /* Constructor for Display class */
@@ -120,7 +123,7 @@ function OptionsPage() {
         var h = g_height / 8 + 20;
         var gap = 80;
         this.drawBox( "Options", h - 20);
-        this.drawBox( true ? "Sound Effects [On]" : "Sound Effects [Off]", h + gap );
+        this.drawBox( this.audioOptionText[ this.audioOption ], h + gap );
         this.drawBox( "Source Code", h + gap * 2);
         this.drawBox( "Level Editor", h + gap * 3);
         this.drawBox( "Reset Game", h + gap * 4);
@@ -163,13 +166,26 @@ function OptionsPage() {
 
         if ( state != this.mouseButtonDown ) return;
 
+        if ( x < Tile.width * 3 && y > g_height - Tile.height * 1 ) {
+          return;
+        }
+
         if ( x < Tile.width * 3 && y > g_height - Tile.height * 3 ) {
           g_display = new TitlePage();
           return;
         }
 
         var h = Math.floor((y - g_height / 8) / 80);
+        if ( h == 1 ) {
+          // Audio settings
+          this.audioOption = ( this.audioOption + 1 ) % this.audioOptionText.length;
+
+          Music.toggleMusic( this.audioOption == 0 );
+          Sounds.toggleSounds( this.audioOption <= 1 );
+        }
+
         if ( h == 3 ) {
+          // Level editor
           g_display = new LevelEditor();
         }
     }

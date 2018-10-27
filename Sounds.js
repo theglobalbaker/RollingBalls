@@ -23,15 +23,15 @@
  */
 var Sounds = new Object();
 
-Sounds.sfxVolume = 0.02;
+Sounds.sfxVolume = 0.04;
 
 Sounds.isMute = function isMute() {
   return Sounds.sfxVolume == 0.0;
 }
 
 /* Switch sound effects on/off */
-Sounds.toggleSounds = function toggleSounds() {
-  Sounds.sfxVolume = 0.02 - Sounds.sfxVolume;
+Sounds.toggleSounds = function toggleSounds( state ) {
+    Sounds.sfxVolume = state ? 0.04 : 0.0;
 }
 
 /* Note 0 is A */
