@@ -44,23 +44,28 @@ Sounds.createNote  = function createNote( note, duration ) {
   return s;
 };
 
-Sounds.playClick = function playClick() {
+Sounds.playClick = function playClick() { RunPrivileged("Sounds.playClick_int()"); };
+Sounds.playClick_int = function playClick_int() {
   var sfx = new Audio( "Click.wav" );
   sfx.volume = Sounds.sfxVolume;
   sfx.play();
 };
 
-Sounds.playPing  = function playPing() {
+
+Sounds.playPing  = function playPing() { RunPrivileged("Sounds.playPing_int()"); };
+Sounds.playPing_int  = function playPing_int() {
   var sfx = new Audio( "Ping.wav" );
   sfx.volume = Sounds.sfxVolume;
   sfx.play();
 };
 
-Sounds.playBuzz  = function playBuzz() {
+Sounds.playBuzz  = function playBuzz() { RunPrivileged("Sounds.playBuzz_int()"); };
+Sounds.playBuzz_int  = function playBuzz_int() {
   var sfx = new Audio( "Buzz.wav" );
   sfx.volume = Sounds.sfxVolume * 8;
   sfx.play();
 };
+
 
 Sounds.noteCache = new Array();
 

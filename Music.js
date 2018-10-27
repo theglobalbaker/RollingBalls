@@ -83,7 +83,8 @@ Music.fade = function fade() {
 }
 
 /* If the music has finished, we restart it in this loop */
-Music.loop = function loop() {
+Music.loop = function cache() { RunPrivileged("Music.loop_int()"); };
+Music.loop_int = function loop_int() {
   /* The music should not be playing - quit immediately */
   if ( Music.playing == 0 ) {
     return;
