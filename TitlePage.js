@@ -49,6 +49,12 @@ function TitlePage() {
     }
 
     /* The user has clicked on the display */
+    this.touchEvent = 
+      function touchEvent( mouseDown, parsedEvent ) {
+        this.userTouch(parsedEvent.id, mouseDown, parsedEvent.x, parsedEvent.y);
+    }
+
+    /* The user has clicked on the display */
     this.userTouch = 
       function userTouch( id, state, x, y ) {
 
@@ -143,6 +149,12 @@ function OptionsPage() {
     this.userMouse = 
       function userMouse( mouseDown, x, y ) {
         this.userTouch( 0, mouseDown, x, y );
+    }
+
+    /* The user has clicked on the display */
+    this.touchEvent = 
+      function touchEvent( mouseDown, parsedEvent ) {
+        this.userTouch(parsedEvent.id, mouseDown, parsedEvent.x, parsedEvent.y);
     }
 
     /* The user has clicked on the display */

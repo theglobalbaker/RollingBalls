@@ -32,7 +32,8 @@ function Display( levelNumber ) {
       function initialise( levelNumber ) {
         
         // Load the level and initialize the board
-        this.board = new Board( Level.load(levelNumber) );
+        this.level = Level.load(levelNumber);
+        this.board = new Board( level );
 
         // Level and statistics
         this.levelNumber = levelNumber;
@@ -59,6 +60,9 @@ function Display( levelNumber ) {
 
         // Signal that a complete redisplay is necessary
         this.redrawAll  = true;
+
+        // Show Prelevel message
+        this.showPrelevelMessage = true;
     }
 
 
@@ -176,11 +180,17 @@ function Display( levelNumber ) {
            this.drawBall(ball);
         }
 
+        // Prelevel message
+        if ( this.showPrelevelMessage ) {
+          this.drawPrelevelMessage();
+        }
+
         // End of level
         if ( this.board.getBalls().length == 0 ) {
           this.endOfLevel = true;
           this.drawEndOfLevel();
         }
+
       };
 
     /**
@@ -266,6 +276,14 @@ function Display( levelNumber ) {
             }
           }
           return;
+        }
+
+        // Prelevel message
+        if ( this.showPrelevelMessage ) {
+          if ( mouseDown == this.mouseButtonDown) {
+	      this.showPrelevelMessage = false;
+              this.redrawAll = true;
+          }
         }
 
         // Menu
@@ -553,6 +571,29 @@ function Display( levelNumber ) {
           }
         }
     }
+
+    /*
+     * Show the message before the level starts
+     */
+    this.drawPrelevelMessage = 
+      function drawPrelevelMessage() {
+
+        // Make the image a little darker
+        this.canvas.fillStyle = "rgba( 0, 0, 0, 0.7 )";
+        this.canvas.fillRect( 0, 0, g_width, g_height );
+
+        this.canvas.fillStyle = "rgba( 255, 255, 255, 1.0 )";
+        this.canvas.font = '35px sans-serif';
+        var textWidth = this.canvas.measureText( this.level.name ).width;
+        this.canvas.fillText( this.level.name, (g_width - textWidth) / 2, g_height / 2 - 50 );
+
+        this.canvas.font = '30px sans-serif';
+        textWidth = this.canvas.measureText( this.level.message ).width;
+        this.canvas.fillText( this.level.message, (g_width - textWidth) / 2, g_height / 2 + 50 );
+
+        this.redrawAll = true;
+    }
+
 
     /*
      * The user has completed the level

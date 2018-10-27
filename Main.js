@@ -78,15 +78,17 @@ function start() {
   document.addEventListener( "touchend",   touchEndEvent, false );
   TickTimer.start();
 
+  Music.cache();
+  Music.play(0);
+
   if ( !document.location.search.startsWith( "?level=" ) ) {
     /* Display the Title Page */
     g_display = new TitlePage();
   } else {
     /* Play a level packed in the URL */
-    LevelEditor.unpackLevel( document.location.search.substring( "?level=".length ) );
+    LevelEditor.unpackLevel( document.location.search.substring( 1 ) );
     g_display = new Display(0);
   }
-
   onResize();
 }
 

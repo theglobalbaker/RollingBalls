@@ -151,12 +151,10 @@ function LevelEditor() {
         // Javascript version
         var level = 
             "  function Level_1() {\n"
-          + "    this.accessCode = \"\";\n"
-          + "    this.name       = \"\";\n"
-          + "    this.message    = \"\";\n"
+          + "    this.name       = \"" + this.level.name + "\";\n"
+          + "    this.message    = \"" + this.level.message + "\";\n"
           + "    this.board      =\n"
           + "    [\n";
-
 
         for ( var y = 0; y < this.level.HEIGHT; y++ ) {
           level += "      [";
@@ -165,7 +163,7 @@ function LevelEditor() {
 
             level += this.level.board[y][x] + ",";
 
-            url = url + ('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'[ this.level.board[y][x] ]);
+            url = url + LevelEditor.packing[ this.level.board[y][x] ];
           }
           level += "],\n";
         }
@@ -174,9 +172,11 @@ function LevelEditor() {
             "    ];\n";
           + "  };\n\n";
 
+        url = url + "&name=%22" + this.level.name + "%22&message=%22" + this.level.message + "%22";
+
         document.body.style.color = "#ffffff"
         document.body.innerHTML = '<br/><font size="48"><a href="' + url + '">Share this link</a></font><br/><br/>' + level.replace(/\n/g, '<br/>');
-  };
+    };
 
 
     /*
@@ -207,21 +207,34 @@ LevelEditor.packing = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
  */
 LevelEditor.unpackLevel = 
   function unpackLevel( serialized ) {
-      for ( var y = 0; y < Level.HEIGHT; y++ ) {
-        for ( var x = 0; x < Level.WIDTH; x++ ) {
-            g_levelEdit[y][x] = LevelEditor.packing.indexOf( serialized[0] );
-            serialized = serialized.substring(1); 
-        }
+    serialized = serialized.substring( "level=".length );
+    for ( var y = 0; y < Level.HEIGHT; y++ ) {
+      for ( var x = 0; x < Level.WIDTH; x++ ) {
+        g_levelEdit[y][x] = LevelEditor.packing.indexOf( serialized[0] );
+        serialized = serialized.substring(1); 
       }
+    }
+
+    if ( serialized.startsWith("&name=%22") ) {
+      serialized = serialized.substring( "&name=%22".length );
+      g_name = serialized.substring( 0, serialized.indexOf("%22") );
+      serialized = serialized.substring( g_name.length + 3 );
+    }
+
+    if ( serialized.startsWith("&message=%22") ) {
+      serialized = serialized.substring( "&message=%22".length );
+      g_message = serialized.substring( 0, serialized.indexOf("%22") );
+    }
   }
 
 function Level_0() {
-    this.accessCode = "";
-    this.name       = "";
-    this.message    = "";
+    this.name       = g_name;
+    this.message    = g_message;
     this.board      = g_levelEdit;
 }
 
+var g_name = "Name";
+var g_message = "Message";
 var g_levelEdit = 
    [
      [ 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3 ],
