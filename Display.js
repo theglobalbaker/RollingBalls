@@ -63,6 +63,7 @@ function Display( levelNumber ) {
 
         // Show Prelevel message
         this.showPrelevelMessage = true;
+        this.endOfLevelDelay = 50;
     }
 
 
@@ -187,8 +188,10 @@ function Display( levelNumber ) {
 
         // End of level
         if ( this.board.getBalls().length == 0 ) {
-          this.endOfLevel = true;
-          this.drawEndOfLevel();
+          if ( this.endOfLevelDelay-- <= 0 ) {
+            this.endOfLevel = true;
+            this.drawEndOfLevel();
+          }
         }
 
       };

@@ -57,6 +57,13 @@ Sounds.playPing_int  = function playPing_int() {
   var sfx = new Audio( "Ping.wav" );
   sfx.volume = Sounds.sfxVolume;
   sfx.play();
+}
+
+Sounds.playFall  = function playPing() { RunPrivileged("Sounds.playFall_int()"); };
+Sounds.playFall_int  = function playFall_int() {
+  var sfx = new Audio( "Fall.wav" );
+  sfx.volume = Sounds.sfxVolume;
+  sfx.play();
 };
 
 Sounds.playBuzz  = function playBuzz() { RunPrivileged("Sounds.playBuzz_int()"); };
