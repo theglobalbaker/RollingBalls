@@ -20,3 +20,7 @@ function RunPrivileged(call) {
     document.location = "run-priv://" + call;
 };
 
+/* Return true if this is on IOS */
+function IsTablet() {
+  return true;
+};

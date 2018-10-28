@@ -78,9 +78,6 @@ function start() {
   document.addEventListener( "touchend",   touchEndEvent, false );
   TickTimer.start();
 
-  Music.cache();
-  Music.play(0);
-
   if ( !document.location.search.startsWith( "?level=" ) ) {
     /* Display the Title Page */
     g_display = new TitlePage();

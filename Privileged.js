@@ -21,3 +21,7 @@ function RunPrivileged(call) {
     eval( call );
 };
 
+/* Return true if this is on IOS */
+function IsTablet() {
+  return false;
+}

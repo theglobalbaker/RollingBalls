@@ -25,6 +25,7 @@ function TitlePage() {
     /* Constructor for Display class */
     this.initialise =
       function initialise() {
+        Sounds.toggleSounds( new ProgressRecord().getAudioEnabled() );
     };
 
     /* Constructor for Display class */
@@ -102,9 +103,10 @@ function OptionsPage() {
     /* Constructor for Display class */
     this.initialise =
       function initialise() {
+      this.audioOptionText = [ "Sound Effects on", "Sound Effects off" ];
 
-      this.audioOptionText = [ "Music and Sound Effects", "Sound Effects only", "Mute" ];
-      this.audioOption = (1 - Music.enabled) + (Sounds.isMute() ? 1 : 0);
+      this.progressRecord = new ProgressRecord();
+      this.audioOption = this.progressRecord.getAudioEnabled() ? 0 : 1;
     };
 
     /* Constructor for Display class */
@@ -125,7 +127,7 @@ function OptionsPage() {
         this.drawBox( "Options", h - 20);
         this.drawBox( this.audioOptionText[ this.audioOption ], h + gap );
         this.drawBox( "Source Code", h + gap * 2);
-        this.drawBox( "Level Editor", h + gap * 3);
+        if ( !IsTablet() ) this.drawBox( "Level Editor", h + gap * 3);
         this.drawBox( "Reset Game", h + gap * 4);
 
         // Back
@@ -179,14 +181,21 @@ function OptionsPage() {
         if ( h == 1 ) {
           // Audio settings
           this.audioOption = ( this.audioOption + 1 ) % this.audioOptionText.length;
-
-          Music.toggleMusic( this.audioOption == 0 );
-          Sounds.toggleSounds( this.audioOption <= 1 );
+          Sounds.toggleSounds( this.audioOption == 0 );
+          this.progressRecord.setAudioEnabled( this.audioOption == 0 );
         }
 
-        if ( h == 3 ) {
+        if ( !IsTablet() && h == 3 ) {
           // Level editor
           g_display = new LevelEditor();
+        }
+
+        if ( h == 4 ) {
+          // Reset game
+          if ( confirm( "Select ok to delete your game progress." ) ) {
+            this.progressRecord.reset();
+            g_display = new OptionsPage();
+          }
         }
     }
 

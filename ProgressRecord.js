@@ -71,6 +71,24 @@ function ProgressRecord() {
         }
     }
 
+    this.getAudioEnabled = 
+      function getAudioEnabled() {
+        return this.audioEnabled;
+    }
+
+    this.setAudioEnabled = 
+      function setAudioEnabled( enabled ) {
+        this.audioEnabled = enabled;
+        this.save();
+    }
+
+    this.reset =
+      function reset() {
+        this.audioEnabled = true;
+        this.starsOnLevel = [];
+        this.save();
+    }
+
     // Save state to a cookie
     this.save =
       function save() {
@@ -82,11 +100,14 @@ function ProgressRecord() {
 	  }
         }
 
-        SetCookie(progress, 1);
+        SetCookie(progress, this.audioEnabled ? "1" : "0");
     }
 
     this.load =
       function load() {
+        var audio = GetCookie("Audio");
+        this.audioEnabled = audio != "0";
+
         // cookie is a string of characters: *0123 depending on whether the user has completed the level 
         var progress = GetCookie("Progress");
         if ( progress == null ) progress = "";
