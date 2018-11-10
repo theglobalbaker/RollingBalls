@@ -204,7 +204,7 @@ function Level_6() {
 };
 
 
-function Level_7() {
+function Level_34() {
     this.accessCode = "";
     this.name       = "Don't worry...";
     this.message    = "...be happy!";
@@ -232,7 +232,7 @@ function Level_7() {
 };
 
 
-function Level_8() {
+function Level_7() {
     this.accessCode = "";
     this.name       = "Maze";
     this.message    = "I'm lost.  Are you?";
@@ -258,7 +258,7 @@ function Level_8() {
      ];
 };
 
-function Level_9() {
+function Level_23() {
     this.accessCode = "";
     this.name       = "Many colours";
     this.message    = "Arrgh!";
@@ -285,7 +285,7 @@ function Level_9() {
      ];
 };
 
-function Level_10() {
+function Level_35() {
     this.accessCode = "";
     this.name       = "Filtering";
     this.message    = "I can't get by...";
@@ -311,7 +311,7 @@ function Level_10() {
      ];
 };
 
-function Level_11() {
+function Level_8() {
     this.accessCode = "";
     this.name       = "Sliding puzzle";
     this.message    = "Can't even move...";
@@ -337,7 +337,7 @@ function Level_11() {
      ];
 };
 
-function Level_12() {
+function Level_9() {
     this.accessCode = "";
     this.name       = "Moving walls";
     this.message    = "...are in the way!";
@@ -363,7 +363,7 @@ function Level_12() {
      ];
 };
 
-function Level_13() {
+function Level_nn() {
   this.name       = "Welcome to Rolling Balls!";
   this.message    = "Roll the red ball over the lava to the red exit.";
    this.board      =
@@ -393,7 +393,7 @@ function Level_13() {
     ];
   };
 
-function Level_14() {
+function Level_36() {
     this.accessCode = "";
     this.name       = "Disappearing tiles";
     this.message    = "Don't fall into the lava!";
@@ -420,7 +420,7 @@ function Level_14() {
 };
 
 
-function Level_15() {
+function Level_37() {
     this.accessCode = "";
     this.name       = "Three ball";
     this.message    = "Triball";
@@ -447,7 +447,7 @@ function Level_15() {
      ];
 };
 
-function Level_16() {
+function Level_38() {
     this.accessCode = "";
     this.name       = "Round the corner";
     this.message    = "So close, yet so far.";
@@ -473,7 +473,7 @@ function Level_16() {
      ];
 };
 
-function Level_17() {
+function Level_39() {
     this.accessCode = "";
     this.name       = "Keys";
     this.message    = "In the wrong place...";
@@ -499,7 +499,7 @@ function Level_17() {
      ];
 }
 
-function Level_18() {
+function Level_10() {
     this.accessCode = "";
     this.name       = "Empty space";
     this.message    = "Find the way over";
@@ -525,7 +525,7 @@ function Level_18() {
      ];
 };
 
-function Level_19() {
+function Level_11() {
     this.accessCode = "";
     this.name       = "Lots of colours";
     this.message    = "Who's going where?";
@@ -552,7 +552,7 @@ function Level_19() {
      ];
 }
 
-function Level_20() {
+function Level_12() {
     this.accessCode = "";
     this.name       = "Teleporting";
     this.message    = "Quantum tunneling?";
@@ -578,7 +578,7 @@ function Level_20() {
      ];
 };
 
-function Level_21() {
+function Level_13() {
     this.accessCode = "";
     this.name       = "Round the twist";
     this.message    = "Can't get by...";
@@ -604,7 +604,7 @@ function Level_21() {
      ];
 };
 
-function Level_22() {
+function Level_14() {
     this.accessCode = "";
     this.name       = "Up and down";
     this.message    = "The elevator";
@@ -630,7 +630,7 @@ function Level_22() {
      ];
 };
 
-function Level_23() {
+function Level_15() {
     this.accessCode = "";
     this.name       = "Who goes first";
     this.message    = "Only one platform";
@@ -708,7 +708,7 @@ function Level_25() {
      ];
 };
 
-function Level_26() {
+function Level_16() {
     this.accessCode = "";
     this.name       = "Let me out";
     this.message    = "Stuck again!";
@@ -735,7 +735,7 @@ function Level_26() {
 };
 
 
-function Level_27() {
+function Level_17() {
     this.accessCode = "";
     this.name       = "Pot holes!";
     this.message    = "Platform swiss cheese";
@@ -764,7 +764,7 @@ function Level_27() {
 };
 
 
-function Level_28() {
+function Level_18() {
     this.accessCode = "";
     this.name       = "One way traffic";
     this.message    = "Go the long way...";
@@ -790,7 +790,7 @@ function Level_28() {
      ];
 };
 
-function Level_29() {
+function Level_19() {
     this.accessCode = "";
     this.name       = "More holes...";
     this.message    = "...and two balls";
@@ -816,7 +816,7 @@ function Level_29() {
    ];
 };
 
-function Level_30() {
+function Level_20() {
     this.accessCode = "";
     this.name       = "Symmetry 2";
     this.message    = "Looks pretty, but I don't like it!";
@@ -842,7 +842,7 @@ function Level_30() {
   ];
 };
 
-function Level_31() {
+function Level_26() {
     this.accessCode = "";
     this.name       = "Full screen";
     this.message    = "Up or down?";
@@ -868,7 +868,7 @@ function Level_31() {
      ];
 }
 
-function Level_32() {
+function Level_27() {
     this.accessCode = "";
     this.name       = "Small spaces";
     this.message    = "Gotta get out!";
@@ -894,7 +894,7 @@ function Level_32() {
      ];
 }
 
-function Level_33() {
+function Level_40() {
     this.accessCode = "";
     this.name       = "Traffic Jam 2";
     this.message    = "Lots of colours...";
@@ -921,7 +921,7 @@ function Level_33() {
  ];
 };
 
-function Level_34() {
+function Level_28() {
     this.accessCode = "";
     this.name       = "Vertical symmetry";
     this.message    = "Left and Right";
@@ -947,7 +947,7 @@ function Level_34() {
      ];
 }
 
-function Level_35() {
+function Level_41() {
     this.accessCode = "";
     this.name       = "I want to go left";
     this.message    = "Not right.  Not up.  Not down.";
@@ -973,7 +973,7 @@ function Level_35() {
      ];
 }
 
-function Level_36() {
+function Level_42() {
     this.accessCode = "";
     this.name       = "Center court";
     this.message    = "Keys in the wrong place again...";
@@ -999,7 +999,7 @@ function Level_36() {
      ];
 };
 
-function Level_37() {
+function Level_43() {
     this.accessCode = "";
     this.name       = "On the up...";
     this.message    = "Just a smidgen high for me";
@@ -1025,7 +1025,7 @@ function Level_37() {
      ];
 };
 
-function Level_38() {
+function Level_21() {
     this.accessCode = "";
     this.name       = "Nowhere to stand";
     this.message    = "Don't fall in!";
@@ -1051,7 +1051,7 @@ function Level_38() {
      ];
 };
 
-function Level_39() {
+function Level_29() {
     this.accessCode = "";
     this.name       = "Bits and bobs";
     this.message    = "Can you get that last star?";
@@ -1078,7 +1078,7 @@ function Level_39() {
      ];
 };
 
-function Level_40() {
+function Level_30() {
     this.accessCode = "";
     this.name       = "To infinity and beyond...";
     this.message    = "...or the edge of the sreen at least!";
@@ -1104,7 +1104,7 @@ function Level_40() {
      ];
 };
 
-function Level_41() {
+function Level_31() {
     this.accessCode = "";
     this.name       = "Going right.";
     this.message    = "Needs a central justification";
@@ -1130,7 +1130,7 @@ function Level_41() {
      ];
 };
 
-function Level_42() {
+function Level_32() {
     this.accessCode = "";
     this.name       = "Let me out!!!";
     this.message    = "Trapped forever";
@@ -1157,7 +1157,7 @@ function Level_42() {
 };
 
 
-function Level_43() {
+function Level_22() {
     this.accessCode = "";
     this.name       = "Is that a squashed spider?";
     this.message    = "Weird things...";
@@ -1184,7 +1184,7 @@ function Level_43() {
      ];
 };
 
-function Level_44() {
+function Level_33() {
     this.accessCode = "";
     this.name       = "No comment";
     this.message    = "Go to the edge!";
@@ -1211,7 +1211,7 @@ function Level_44() {
      ];
 };
 
-function Level_45() {
+function Level_44() {
     this.accessCode = "";
     this.name       = "Five star level...";
     this.message    = "...with three stars.";
@@ -1237,7 +1237,7 @@ function Level_45() {
      ];
 };
 
-function Level_46() {
+function Level_45() {
     this.accessCode = "";
     this.name       = "Wide screen";
     this.message    = "Go left and right...";
