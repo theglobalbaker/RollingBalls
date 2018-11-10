@@ -40,6 +40,9 @@ function Display( levelNumber ) {
         this.collectedStars = 0;
         this.bestCollectedStars = new ProgressRecord().getStars( this.levelNumber );
 
+        // Record the current Level
+        ProgressRecord.lastLevelPlayed = this.levelNumber;
+
         // Dictionary [touch_id -> MovingBall]
         this.dragBalls = new Array();
 

@@ -22,7 +22,7 @@
 function LevelEditor() {
     CanvasDisplay.prototype.constructor.apply( this );
 
-    this.level = Level.load(0);
+    this.level = Level.load( ProgressRecord.lastLevelPlayed );
     this.redrawAll = true;
     this.selected = 0;
 

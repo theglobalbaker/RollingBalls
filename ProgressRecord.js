@@ -134,6 +134,9 @@ function ProgressRecord() {
     this.load();
 };
 
+/** Last level that was played */
+ProgressRecord.lastLevelPlayed = 0;
+
 var g_cookie = "";
 
 function GetCookie( name ) {

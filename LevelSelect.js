@@ -26,7 +26,7 @@ function LevelSelect() {
     this.initialise =
       function initialise() {
         this.progress = new ProgressRecord();
-        this.levelGroup = 0;
+        this.levelGroup = Math.floor( ProgressRecord.lastLevelPlayed / this.levelsPerGroup );
     };
 
     /* Constructor for Display class */
@@ -59,7 +59,7 @@ function LevelSelect() {
         for ( var i = 0; i < this.levelsPerGroup; i++ ) {
             // Show which levels can be played 
             var level = i + 1 + this.levelGroup * this.levelsPerGroup;
-            if ( level >= this.progress.numberOfLevels ) break;
+            if ( level > this.progress.numberOfLevels ) break;
 
 	    var x = (i % this.tilesAcross) * this.tileGapX + this.offsetX;
             var y = Math.floor( i / this.tilesAcross ) * this.tileGapY + this.offsetY;
