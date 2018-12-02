@@ -26,7 +26,10 @@ function LevelSelect() {
     this.initialise =
       function initialise() {
         this.progress = new ProgressRecord();
-        this.levelGroup = Math.floor( ProgressRecord.lastLevelPlayed / this.levelsPerGroup );
+
+        this.levelGroup = Math.floor( (ProgressRecord.lastLevelPlayed - 1) / this.levelsPerGroup );
+        if ( this.levelGroup < 0 ) this.levelGroup = 0;
+        if ( this.levelGroup > 3 ) this.levelGroup = 3;
     };
 
     /* Constructor for Display class */
