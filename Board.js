@@ -47,6 +47,10 @@ function Board(level) {
 
     this.getTile =
       function getTile(pos) {
+        if (   pos.getX() < 0 || pos.getX() >= this.width
+            || pos.getY() < 0 || pos.getY() >= this.height ) {
+          return new Tile( Tile.wall );
+        }
         return this.board[pos.getY()][pos.getX()];
     };
 

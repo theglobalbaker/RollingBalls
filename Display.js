@@ -96,6 +96,11 @@ function Display( levelNumber ) {
      */
     this.drawTileAt =
       function drawTileAt(position) {
+        if (   position.getX() < 0 || position.getX() >= this.board.width
+            || position.getY() < 0 || position.getY() >= this.board.height ) {
+          return;
+	}
+
          var tileId = this.board.getTile( position ).getId();
          this.canvas.drawImage( ImageCatalogue.getIconsImage(),
                                 2 * Tile.width * ( tileId & 3 ), 2 * Tile.height * ( tileId >> 2 ),
@@ -386,7 +391,7 @@ function Display( levelNumber ) {
         // Check if we can move vertically/horizontally
         var canLeaveTile = false;
 
-	if (dx == 0 && dy == 0) {
+        if ( dragBall.onMovingTile() || (dx == 0 && dy == 0) ) {
           canLeaveTile = false;
         } else if ( (dx * dy == 0) ) {
           canLeaveTile = this.handleBallMove(this.dragBalls[id], currentPosition, new Vector(dx, dy));
