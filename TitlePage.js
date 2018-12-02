@@ -25,7 +25,6 @@ function TitlePage() {
     /* Constructor for Display class */
     this.initialise =
       function initialise() {
-        Sounds.toggleSounds( new ProgressRecord().getAudioEnabled() );
     };
 
     /* Constructor for Display class */
@@ -60,6 +59,9 @@ function TitlePage() {
       function userTouch( id, state, x, y ) {
 
         if ( state != this.mouseButtonDown ) return;
+
+        // Enable or disable sounds
+        Sounds.toggleSounds( new ProgressRecord().getAudioEnabled() );
 
         if ( x < Tile.width * 3 && y > g_height - Tile.height * 3 ) {
           g_display = new OptionsPage();
