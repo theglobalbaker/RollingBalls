@@ -283,7 +283,13 @@ function Display( levelNumber ) {
               g_display = new LevelSelect();
             }
             if ( x > g_width / 2 && x < g_width - 100 && y > g_height - 200 && y < g_height - 100 ) {
-              g_display = new Display( this.levelNumber + 1 );
+              if ( Level.load( this.levelNumber + 1 ) == null ) {
+	        // This is the last level - return to the level select page
+                g_display = new LevelSelect();
+                return;
+              } else {
+                g_display = new Display( this.levelNumber + 1 );
+              }
             }
           }
           return;
