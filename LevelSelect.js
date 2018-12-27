@@ -205,7 +205,7 @@ function LevelSelect() {
     this.initialise();
 }
 
-LevelSelect.backgroundColour = "rgba(0,0,255,1.0)";
+LevelSelect.backgroundColour = "rgba(41,5,5,1.0)";
 LevelSelect.textColour       = "rgba(0,0,0,1.0)";
 LevelSelect.titleFont        = "20px Ariel";
 LevelSelect.textFont         = "50px Ariel";
