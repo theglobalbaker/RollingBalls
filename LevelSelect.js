@@ -92,7 +92,7 @@ function LevelSelect() {
               var image = 1;
               this.canvas.drawImage( ImageCatalogue.getStarsImage(), 
                                      Tile.width * 2 * image, 0, Tile.width * 2, Tile.height * 2,
-                                     x + j * 10, y, Tile.height / 2, Tile.width);
+                                     x + j * 28, y, Tile.width, Tile.height );
             }
         }
 
