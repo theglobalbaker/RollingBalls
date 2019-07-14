@@ -177,15 +177,6 @@ function keyPressEvent( e ) {
   }
 } 
 
-
-/* Handle resize */
-function onResize() {
-  g_xOffset = document.getElementById( "htmlcanvas" ).offsetLeft;
-  g_yOffset = document.getElementById( "htmlcanvas" ).offsetTop;
-  g_xZoom   = document.getElementById( "htmlcanvas" ).width  / document.getElementById( "htmlcanvas" ).offsetWidth;
-  g_yZoom   = document.getElementById( "htmlcanvas" ).height / document.getElementById( "htmlcanvas" ).offsetHeight;
-}
-
 /* Handle resize small is (1008,736) large (1056,800) */
 function onResize() {
     var w =  window.innerWidth;
