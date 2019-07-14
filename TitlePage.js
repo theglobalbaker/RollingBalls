@@ -187,6 +187,11 @@ function OptionsPage() {
           this.progressRecord.setAudioEnabled( this.audioOption == 0 );
         }
 
+        if ( h == 2 ) {
+          // Level editor
+          document.location = "https://github.com/theglobalbaker/RollingBalls";
+        }
+
         if ( !IsTablet() && h == 3 ) {
           // Level editor
           g_display = new LevelEditor();
